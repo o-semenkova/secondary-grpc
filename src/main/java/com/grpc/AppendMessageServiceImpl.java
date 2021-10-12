@@ -1,7 +1,8 @@
 package com.grpc;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentNavigableMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.stream.Collectors;
 
 import io.grpc.stub.StreamObserver;
@@ -10,7 +11,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 @GrpcService
 public class AppendMessageServiceImpl extends com.grpc.AppendMessageServiceGrpc.AppendMessageServiceImplBase {
 
-  private HashMap<Long, String> messages = new HashMap<>();
+  private ConcurrentNavigableMap<Long, String> messages = new ConcurrentSkipListMap<>();
 
   @Override
   public void append(com.grpc.LogMessage request,
