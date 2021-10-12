@@ -16,6 +16,12 @@ public class AppendMessageServiceImpl extends com.grpc.AppendMessageServiceGrpc.
   @Override
   public void append(com.grpc.LogMessage request,
                                                      StreamObserver<com.grpc.LogMessageAck> responseObserver) {
+    try{
+      Thread.currentThread().sleep(150000);
+    } catch (InterruptedException e) {
+      // TODO add logic
+    }
+
     messages.put(request.getId(), request.getText());
 
     com.grpc.LogMessageAck ack = com.grpc.LogMessageAck.newBuilder()
