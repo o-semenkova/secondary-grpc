@@ -3,6 +3,7 @@ package com.grpc;
 import java.util.Map;
 import java.util.concurrent.ConcurrentNavigableMap;
 import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import io.grpc.stub.StreamObserver;
@@ -11,18 +12,17 @@ import net.devh.boot.grpc.server.service.GrpcService;
 @GrpcService
 public class AppendMessageServiceImpl extends com.grpc.AppendMessageServiceGrpc.AppendMessageServiceImplBase {
 
-  private ConcurrentNavigableMap<Long, String> messages = new ConcurrentSkipListMap<>();
+  private ConcurrentNavigableMap<Long, Integer> messages = new ConcurrentSkipListMap<>();
 
   @Override
   public void append(com.grpc.LogMessage request,
                                                      StreamObserver<com.grpc.LogMessageAck> responseObserver) {
-    try{
-      Thread.currentThread().sleep(150000);
+    try {
+      Thread.sleep(20000);
     } catch (InterruptedException e) {
-      // TODO add logic
+      e.printStackTrace();
     }
-
-    messages.put(request.getId(), request.getText());
+    messages.put(request.getId(), request.getW());
 
     com.grpc.LogMessageAck ack = com.grpc.LogMessageAck.newBuilder()
                                                                      .setId(request.getId())
@@ -32,7 +32,7 @@ public class AppendMessageServiceImpl extends com.grpc.AppendMessageServiceGrpc.
     responseObserver.onCompleted();
   }
 
-  private String convertWithStream(Map<Long, String> map) {
+  private String convertWithStream(Map<Long, Integer> map) {
     String mapAsString = map.keySet().stream()
                             .map(key -> key + "=" + map.get(key))
                             .collect(Collectors.joining(", ", "{", "}"));
