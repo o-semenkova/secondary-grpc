@@ -18,7 +18,7 @@ public class AppendMessageServiceImpl extends com.grpc.AppendMessageServiceGrpc.
   public void append(com.grpc.LogMessage request,
                                                      StreamObserver<com.grpc.LogMessageAck> responseObserver) {
     try {
-      Thread.sleep(20000);
+      Thread.sleep(10000);
     } catch (InterruptedException e) {
       e.printStackTrace();
     }
